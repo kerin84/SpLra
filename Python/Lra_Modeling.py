@@ -8,27 +8,40 @@ Created on Thu Oct  6 12:38:37 2022
 
 import numpy as np
 import scipy.linalg as la
-from blkhankel import blkhank
-import pandas as pd
-from scipy import signal
 import control as cnt
 import numpy.matlib
 from lsspsolver import lsspsolver
 
-def lra(D,r,tol=1e-3,delta=1e-3):
-    
-    n,m=D.shape
-    u,s,v=la.svd(D,full_matrices=0)
-    R=u[:,r:].T
-    P=u[:,:r]
-    v=v.T
-    Dh=u[:,:r].dot(np.diag(s[:r]).dot(v[:,:r].T))
-    
-    x=-la.inv(R[-(n-r):,-(n-r):]).dot(R[:,:-(n-r)])
-    x_sp=lsspsolver(Dh[:-(n-r),:].T,Dh[-(n-r):,:].T,tol=tol,delta=delta).T
-    R_sp = np.block([-x_sp,np.eye(R.shape[0])])
-    
-    return R,R_sp,P,Dh,x,x_sp
+def lra(
+    D: np.ndarray,
+    r: int,
+    tol: float = 1e-3,
+    delta: float = 1e-3,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    D = np.asarray(D)
+    if D.ndim != 2:
+        raise ValueError("D must be a 2D array.")
+
+    n, m = D.shape
+    if not (1 <= r < n):
+        raise ValueError("r must satisfy 1 <= r < number of rows in D.")
+
+    u, s, v = la.svd(D, full_matrices=0)
+    R = u[:, r:].T
+    P = u[:, :r]
+    v = v.T
+    Dh = u[:, :r].dot(np.diag(s[:r]).dot(v[:, :r].T))
+
+    nres = n - r
+    trailing = R[-nres:, -nres:]
+    if np.linalg.matrix_rank(trailing) < nres:
+        raise ValueError("Unable to invert residual basis block; choose a different r.")
+
+    x = -la.inv(trailing).dot(R[:, :-nres])
+    x_sp = lsspsolver(Dh[:-nres, :].T, Dh[-nres:, :].T, tol=tol, delta=delta).T
+    R_sp = np.block([-x_sp, np.eye(R.shape[0])])
+
+    return R, R_sp, P, Dh, x, x_sp
 
 def Ar_Model_sim_lra(A,delta_H,delta_y,x0,N):
     
@@ -95,7 +108,6 @@ def R2tf(R,L,m,dt):
     p,t=R.shape
     L1=L+1
     q=int(t/L1)
-    n=L*p
     
     R_sp=np.reshape(R,(p,q,L1),order='F')
     Q,P = np.flip(-R_sp[:,0:m,:],axis=-1) , np.flip(R_sp[:,m:q,:],axis=-1)

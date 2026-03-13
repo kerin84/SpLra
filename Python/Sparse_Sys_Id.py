@@ -14,14 +14,28 @@ import control as ctl
 import matplotlib.pyplot as plt
 from lsspsolver import lsspsolver
 from statsmodels.tools.eval_measures import rmse
-import pandas as pd
 #from Lra_Modeling import lra
 from blkhankel import blkhank
 
 
-def Ar_Model(X,L,solver,tol=1e-2,delta=1e-2):
+def Ar_Model(
+    X: np.ndarray,
+    L: int,
+    solver: int,
+    tol: float = 1e-2,
+    delta: float = 1e-2,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    X = np.asarray(X)
+    if X.ndim != 2:
+        raise ValueError("X must be a 2D array.")
+    if L < 2:
+        raise ValueError("L must be >= 2.")
+    n, m = X.shape
+    if L > m:
+        raise ValueError("L must be <= number of columns in X.")
+    if solver not in (1, 2):
+        raise ValueError("solver must be 1 (pinv) or 2 (lsspsolver).")
     
-    n,m=X.shape
     Hx=blkhank(X,L,m-L+1)
     
     HLx = Hx[:n*(L-1),:]
@@ -30,7 +44,7 @@ def Ar_Model(X,L,solver,tol=1e-2,delta=1e-2):
     if solver==1:
         A= XL.dot(la.pinv(HLx))
        
-    if solver==2:
+    elif solver==2:
         A = lsspsolver(HLx.T,XL.T,tol,delta)
         A=A.T 
         
@@ -54,15 +68,15 @@ def Ar_2_ss(A,n,m,h):
 
 def x0_ss_estimate(sys,L,Ytrain,Utrain):
     
-    O=ctl.obsv(sys.A,sys.C)
-    n,m=O.shape
+    observability=ctl.obsv(sys.A,sys.C)
+    n,m=observability.shape
     
     if L==2:
         t,y=ctl.forced_response(sys,U=Utrain[:,:L]) 
-        xini=la.pinv(O[:m,:]).dot(Ytrain[:,:L-1].T.reshape(m,1)-y[:,0].reshape(m,1))
+        xini=la.pinv(observability[:m,:]).dot(Ytrain[:,:L-1].T.reshape(m,1)-y[:,0].reshape(m,1))
     else:    
         t,y=ctl.forced_response(sys,U=Utrain[:,:L-1])
-        xini=la.pinv(O[:m,:]).dot(Ytrain[:,:L-1].T.reshape(m,1)-y.reshape(m,1))
+        xini=la.pinv(observability[:m,:]).dot(Ytrain[:,:L-1].T.reshape(m,1)-y.reshape(m,1))
     
     return xini
 
@@ -115,7 +129,7 @@ def Ar_IO_Model(X,U,L,delay=True,tol=1e-2,delta=1e-2):
     
     n1,m1=U.shape
     Hu=blkhank(U,L,m-L+1)
-    if delay==True:
+    if delay:
         Hu=Hu[:n1*(L-1),:]
     HL=np.block([[HLx],[Hu]])
     

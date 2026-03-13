@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite the associated article."
+title: "Official code: Sparse Semilinear Dynamic Models in Python for Identifying and Forecasting Dynamic Systems"
+authors:
+  - family-names: "Cardona"
+    given-names: "K."
+  - family-names: "Vides"
+    given-names: "F."
+identifiers:
+  - type: doi
+    value: "10.5377/ref.v12i1.19433"
+repository-code: "https://fisica.unah.edu.hn/publicaciones/revista-ref/ultimo-volumen-ref/ref-unah-12-1-4/"
+preferred-citation:
+  type: article
+  title: "Sparse Semilinear Dynamic Models in Python for Identifying and Forecasting Dynamic Systems"
+  authors:
+    - family-names: "Cardona"
+      given-names: "K."
+    - family-names: "Vides"
+      given-names: "F."
+  journal: "Revista de la Escuela de Fisica (REF-UNAH)"
+  volume: "12"
+  issue: "1"
+  start: 66
+  end: 81
+  doi: "10.5377/ref.v12i1.19433"
