@@ -10,6 +10,7 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 pip install -r requirements-dev.txt
 export MPLCONFIGDIR="$(pwd)/.mplconfig"
+export XDG_CACHE_HOME="$(pwd)/.cache"
 ```
 
 Reference environment:
@@ -28,6 +29,7 @@ Run the regression tests before running notebooks:
 ruff check Python tests scripts
 pytest -q tests
 python scripts/notebook_smoke_test.py --verbose
+python scripts/run_paper_experiments.py --check artifacts/paper_experiment_baselines.json --tolerance 1e-4
 ```
 
 This validates:
@@ -68,6 +70,7 @@ Use the new modular layers:
 - `io_layer`: data load, standardization, splitting.
 - `core`: model estimation and metrics.
 - `viz`: plotting only.
+- `experiments`: canonical paper workflows for scriptable reproduction.
 
 Example skeleton:
 
@@ -86,6 +89,12 @@ blocks = to_io_blocks(w_train, n_inputs=1)
 result = sparse_lra_sysid(w_train, lag=5, n_inputs=1, x0=0, tol=1e-3, delta=1e-3)
 print(result.misfit, result.fit)
 ```
+
+Canonical non-notebook checks:
+
+- `scripts/run_paper_experiments.py` executes the `hair_dryer` and `cstr` workflows.
+- `artifacts/paper_experiment_baselines.json` stores the frozen reference metrics.
+- CI compares current results against that baseline with a small numeric tolerance.
 
 ## 6) Notes On Colab Paths
 

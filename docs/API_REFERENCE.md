@@ -60,6 +60,19 @@ Main functions:
 - `plot_lag_rmse(...)`
 - `plot_forecast_band(...)`
 
+### `Python/experiments`
+Scriptable paper workflows built on top of `io_layer` and `core`.
+
+Primary module:
+
+- `experiments/paper_experiments.py`
+
+Main functions:
+
+- `run_hair_dryer_experiment(...)`
+- `run_cstr_experiment(...)`
+- `run_paper_experiments(...)`
+
 ## Legacy Compatibility
 
 `Python/Sparse_Lra.py` keeps the original public API and returns tuple outputs expected by existing notebooks:

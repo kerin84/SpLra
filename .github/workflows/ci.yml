@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MPLCONFIGDIR: ${{ github.workspace }}/.mplconfig
+      XDG_CACHE_HOME: ${{ github.workspace }}/.cache
 
     steps:
       - name: Checkout
@@ -35,3 +36,6 @@ jobs:
 
       - name: Notebook smoke test
         run: python scripts/notebook_smoke_test.py --verbose
+
+      - name: Canonical paper experiments
+        run: python scripts/run_paper_experiments.py --check artifacts/paper_experiment_baselines.json --tolerance 1e-4

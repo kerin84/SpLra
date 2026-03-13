@@ -43,10 +43,12 @@ pip install -r requirements-dev.txt
 ### 2) Run tests
 
 ```bash
+export XDG_CACHE_HOME="$(pwd)/.cache"
 export MPLCONFIGDIR="$(pwd)/.mplconfig"
 ruff check Python tests scripts
 pytest -q tests
 python scripts/notebook_smoke_test.py --verbose
+python scripts/run_paper_experiments.py --check artifacts/paper_experiment_baselines.json --tolerance 1e-4
 ```
 
 ### 3) Open notebooks
@@ -78,6 +80,11 @@ Available local datasets:
 ## Reproducibility
 
 See [Reproducibility Guide](docs/REPRODUCIBILITY.md) for the frozen paper workflow and the recommended sequence to reproduce experiments and forecasting workflows.
+
+Canonical script-based experiments now live outside notebooks:
+
+- `scripts/run_paper_experiments.py`: runs the `hair_dryer` and `cstr` paper experiments.
+- `artifacts/paper_experiment_baselines.json`: frozen reference metrics used in CI.
 
 ## API And Architecture Notes
 
