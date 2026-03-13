@@ -1,23 +1,37 @@
 # Reproducibility Guide
 
-This guide describes a practical, stable workflow to reproduce the experiments associated with the paper.
+This guide describes the frozen workflow used to reproduce the official paper artifact and validate the repository after changes.
+
+For exploratory work beyond the published artifact, use the separate [Research Track](RESEARCH_TRACK.md).
 
 ## 1) Environment Setup
 
 ```bash
-python -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
-pip install numpy scipy control statsmodels scikit-learn matplotlib pytest ruff jupyter
-# Optional visual style
-pip install scienceplots
+python -m pip install --upgrade pip
+pip install -r requirements-dev.txt
+export MPLCONFIGDIR="$(pwd)/.mplconfig"
+export XDG_CACHE_HOME="$(pwd)/.cache"
 ```
+
+Reference environment:
+
+- Python `3.11`
+- Runtime dependencies locked in [`requirements-paper.txt`](../requirements-paper.txt)
+- Validation tooling locked in [`requirements-dev.txt`](../requirements-dev.txt)
+
+Optional extras for some notebook cells are not part of the locked paper artifact. These include `scikit-learn`, `scienceplots`, and the local `SIPPY-master/` copy used for baseline comparisons.
 
 ## 2) Verify Core Numerical Code
 
 Run the regression tests before running notebooks:
 
 ```bash
+ruff check Python tests scripts
 pytest -q tests
+python scripts/notebook_smoke_test.py --verbose
+python scripts/run_paper_experiments.py --check artifacts/paper_experiment_baselines.json --tolerance 1e-4
 ```
 
 This validates:
@@ -58,6 +72,7 @@ Use the new modular layers:
 - `io_layer`: data load, standardization, splitting.
 - `core`: model estimation and metrics.
 - `viz`: plotting only.
+- `experiments`: canonical paper workflows for scriptable reproduction.
 
 Example skeleton:
 
@@ -77,14 +92,26 @@ result = sparse_lra_sysid(w_train, lag=5, n_inputs=1, x0=0, tol=1e-3, delta=1e-3
 print(result.misfit, result.fit)
 ```
 
+Canonical non-notebook checks:
+
+- `scripts/run_paper_experiments.py` executes the `hair_dryer` and `cstr` workflows.
+- `artifacts/paper_experiment_baselines.json` stores the frozen reference metrics.
+- CI compares current results against that baseline with a small numeric tolerance.
+
+Research-only extensions:
+
+- `scripts/run_research_benchmarks.py` runs the initial benchmark and robustness suite.
+- Its outputs are meant for iterative comparison and method development, not as a frozen paper baseline.
+
 ## 6) Notes On Colab Paths
 
-Several notebooks were authored in Google Colab with absolute Drive paths (`/content/drive/MyDrive/...`).
+The notebooks now include a standard setup cell that resolves the repository root locally and keeps compatibility with the current folder layout.
 
 When running locally:
 
-- replace absolute Colab paths with local relative paths (`Data/...`)
-- remove package installation cells if dependencies are already installed
+- start Jupyter from the repository root or from `Notebooks/`
+- execute the `Reproducibility setup` cell before any modeling cell
+- keep `Data/`, `Python/`, and `SIPPY-master/` in their tracked locations
 
 ## 7) Expected Outputs
 

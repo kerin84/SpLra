@@ -1,0 +1,92 @@
+{
+  "cstr": {
+    "improvement_over_best_baseline": 82.97202318950012,
+    "lag_sensitivity": {
+      "sparse_lra_fit_percent": [
+        82.75182098851361,
+        86.6247129143524,
+        87.39178561240422
+      ],
+      "x_values": [
+        1.0,
+        2.0,
+        3.0
+      ]
+    },
+    "mean_validation_fit_percent": -0.2202022009865079,
+    "name": "cstr",
+    "noise_robustness": {
+      "sparse_lra_fit_percent": [
+        82.75182098851361,
+        82.66554962146661,
+        81.69057444175493
+      ],
+      "x_values": [
+        0.0,
+        0.01,
+        0.05
+      ]
+    },
+    "persistence_validation_fit_percent": -33.00426840053194,
+    "sample_robustness": {
+      "sparse_lra_fit_percent": [
+        78.25316823455306,
+        81.05885041680651,
+        81.81783737549976,
+        82.75182098851361
+      ],
+      "x_values": [
+        0.3,
+        0.5,
+        0.7,
+        1.0
+      ]
+    },
+    "sparse_lra_validation_fit_percent": 82.75182098851361
+  },
+  "hair_dryer": {
+    "improvement_over_best_baseline": 84.47292923533244,
+    "lag_sensitivity": {
+      "sparse_lra_fit_percent": [
+        79.9439257601489,
+        83.82364296624434,
+        78.59912701607453
+      ],
+      "x_values": [
+        4.0,
+        5.0,
+        6.0
+      ]
+    },
+    "mean_validation_fit_percent": -0.6492862690881118,
+    "name": "hair_dryer",
+    "noise_robustness": {
+      "sparse_lra_fit_percent": [
+        83.82364296624434,
+        83.47870366887291,
+        83.42138602827092
+      ],
+      "x_values": [
+        0.0,
+        0.01,
+        0.05
+      ]
+    },
+    "persistence_validation_fit_percent": -36.209566359575064,
+    "sample_robustness": {
+      "sparse_lra_fit_percent": [
+        73.17251488919226,
+        78.5286356545775,
+        76.17122039108965,
+        83.82364296624434
+      ],
+      "x_values": [
+        0.3,
+        0.5,
+        0.7,
+        1.0
+      ]
+    },
+    "sparse_lra_validation_fit_percent": 83.82364296624434
+  }
+}

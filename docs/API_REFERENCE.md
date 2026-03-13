@@ -60,6 +60,55 @@ Main functions:
 - `plot_lag_rmse(...)`
 - `plot_forecast_band(...)`
 
+### `Python/experiments`
+Scriptable paper workflows built on top of `io_layer` and `core`.
+
+Primary module:
+
+- `experiments/paper_experiments.py`
+
+Main functions:
+
+- `run_hair_dryer_experiment(...)`
+- `run_cstr_experiment(...)`
+- `run_paper_experiments(...)`
+
+### `Python/api`
+Stable high-level entry points for code that should not depend on legacy wrappers.
+
+Primary module:
+
+- `api/public_api.py`
+
+Main dataclasses:
+
+- `DatasetSplit`
+- `InputOutputModel`
+- `ValidationMetrics`
+- `LagSelectionResult`
+- `AutoregressiveModel`
+- `AutoregressiveForecast`
+
+Main functions:
+
+- `prepare_dataset_split(...)`
+- `fit_input_output_model(...)`
+- `select_input_output_lag(...)`
+- `evaluate_input_output_model(...)`
+- `fit_autoregressive_model(...)`
+- `forecast_autoregressive_model(...)`
+
+### `Python/research`
+Exploratory benchmark and robustness tooling for post-paper work.
+
+Primary module:
+
+- `research/benchmark_suite.py`
+
+Main functions:
+
+- `run_research_benchmarks(...)`
+
 ## Legacy Compatibility
 
 `Python/Sparse_Lra.py` keeps the original public API and returns tuple outputs expected by existing notebooks:
@@ -80,6 +129,8 @@ Internally, these wrappers delegate to `core` and `viz`.
 - Core functions should not call plotting functions.
 - Plot modules should receive precomputed arrays/results.
 - New notebook logic should prefer `io_layer` + `core` + `viz` directly.
+- New application or library code should prefer `api` over `Sparse_Lra.py`.
+- Research experiments should live in `research` or `scripts`, not inside notebooks.
 - Keep wrapper behavior stable for backward compatibility.
 
 ## Testing Policy
@@ -97,5 +148,6 @@ must be validated with:
 
 ```bash
 pytest -q tests
-ruff check Python tests
+ruff check Python tests scripts
+python scripts/notebook_smoke_test.py --verbose
 ```

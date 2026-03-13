@@ -1,0 +1,28 @@
+{
+  "cstr": {
+    "dataset_path": "Data/cstr.dat",
+    "identification_fit_percent": 84.11306048277062,
+    "identification_misfit": 17.106190552966925,
+    "lag": 1,
+    "n_inputs": 1,
+    "n_test_samples": 3750,
+    "n_train_samples": 3750,
+    "name": "cstr",
+    "sparsity_percent": 75.0,
+    "train_output_fit_percent": 80.66853623435422,
+    "validation_fit_percent": 82.75182098851361
+  },
+  "hair_dryer": {
+    "dataset_path": "Data/dryer.dat",
+    "identification_fit_percent": 93.94797949702097,
+    "identification_misfit": 2.3219384257094235,
+    "lag": 5,
+    "n_inputs": 1,
+    "n_test_samples": 500,
+    "n_train_samples": 500,
+    "name": "hair_dryer",
+    "sparsity_percent": 36.11111111111111,
+    "train_output_fit_percent": 87.59763679494314,
+    "validation_fit_percent": 83.82364296624434
+  }
+}
