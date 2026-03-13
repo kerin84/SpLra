@@ -10,6 +10,17 @@ This repository contains the official implementation used in the article:
 
 Article page: <https://fisica.unah.edu.hn/publicaciones/revista-ref/ultimo-volumen-ref/ref-unah-12-1-4/>
 
+## Paper Artifact Status
+
+The repository now maintains a frozen paper artifact state for the published REF-UNAH article.
+
+- Reference release: `v1.0.0-paper`
+- Reference Python version: `3.11`
+- Locked runtime environment: [`requirements-paper.txt`](requirements-paper.txt)
+- Locked validation/tooling environment: [`requirements-dev.txt`](requirements-dev.txt)
+
+The locked environment covers the core numerical code, unit tests, and notebook smoke tests. Some full notebook workflows also rely on optional extras such as `scikit-learn`, `scienceplots`, and the vendored `SIPPY-master/` copy for baseline comparisons.
+
 ## What Is In This Repository
 
 - `Python/`: core modeling code (sparse system identification, LRA modeling, utilities).
@@ -23,22 +34,24 @@ Article page: <https://fisica.unah.edu.hn/publicaciones/revista-ref/ultimo-volum
 ### 1) Create environment
 
 ```bash
-python -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
-pip install numpy scipy control statsmodels scikit-learn matplotlib pytest ruff
-# Optional (plot style used in notebooks)
-pip install scienceplots
+python -m pip install --upgrade pip
+pip install -r requirements-dev.txt
 ```
 
 ### 2) Run tests
 
 ```bash
+export MPLCONFIGDIR="$(pwd)/.mplconfig"
+ruff check Python tests scripts
 pytest -q tests
+python scripts/notebook_smoke_test.py --verbose
 ```
 
 ### 3) Open notebooks
 
-Run notebooks in `Notebooks/` using Jupyter or Colab (most notebooks were originally authored for Colab paths).
+Run notebooks in `Notebooks/` using Jupyter from the repository root or from `Notebooks/`. Execute the `Reproducibility setup` cell first. Some benchmark/comparison cells require optional extras not included in the locked artifact environment.
 
 ## Main Python Modules
 
@@ -64,7 +77,7 @@ Available local datasets:
 
 ## Reproducibility
 
-See [Reproducibility Guide](docs/REPRODUCIBILITY.md) for the recommended sequence to reproduce experiments and forecasting workflows.
+See [Reproducibility Guide](docs/REPRODUCIBILITY.md) for the frozen paper workflow and the recommended sequence to reproduce experiments and forecasting workflows.
 
 ## API And Architecture Notes
 

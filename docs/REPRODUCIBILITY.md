@@ -1,23 +1,33 @@
 # Reproducibility Guide
 
-This guide describes a practical, stable workflow to reproduce the experiments associated with the paper.
+This guide describes the frozen workflow used to reproduce the official paper artifact and validate the repository after changes.
 
 ## 1) Environment Setup
 
 ```bash
-python -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
-pip install numpy scipy control statsmodels scikit-learn matplotlib pytest ruff jupyter
-# Optional visual style
-pip install scienceplots
+python -m pip install --upgrade pip
+pip install -r requirements-dev.txt
+export MPLCONFIGDIR="$(pwd)/.mplconfig"
 ```
+
+Reference environment:
+
+- Python `3.11`
+- Runtime dependencies locked in [`requirements-paper.txt`](../requirements-paper.txt)
+- Validation tooling locked in [`requirements-dev.txt`](../requirements-dev.txt)
+
+Optional extras for some notebook cells are not part of the locked paper artifact. These include `scikit-learn`, `scienceplots`, and the local `SIPPY-master/` copy used for baseline comparisons.
 
 ## 2) Verify Core Numerical Code
 
 Run the regression tests before running notebooks:
 
 ```bash
+ruff check Python tests scripts
 pytest -q tests
+python scripts/notebook_smoke_test.py --verbose
 ```
 
 This validates:
@@ -79,12 +89,13 @@ print(result.misfit, result.fit)
 
 ## 6) Notes On Colab Paths
 
-Several notebooks were authored in Google Colab with absolute Drive paths (`/content/drive/MyDrive/...`).
+The notebooks now include a standard setup cell that resolves the repository root locally and keeps compatibility with the current folder layout.
 
 When running locally:
 
-- replace absolute Colab paths with local relative paths (`Data/...`)
-- remove package installation cells if dependencies are already installed
+- start Jupyter from the repository root or from `Notebooks/`
+- execute the `Reproducibility setup` cell before any modeling cell
+- keep `Data/`, `Python/`, and `SIPPY-master/` in their tracked locations
 
 ## 7) Expected Outputs
 

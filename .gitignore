@@ -1,2 +1,21 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+
+# Test and lint caches
+.pytest_cache/
+.ruff_cache/
+.cache/
+
+# Local environments and notebook checkpoints
+.venv/
+.mplconfig/
+.ipynb_checkpoints/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
 # Large archive snapshot (redundant with tracked source tree)
 Proyecto_Splra.zip

@@ -97,5 +97,6 @@ must be validated with:
 
 ```bash
 pytest -q tests
-ruff check Python tests
+ruff check Python tests scripts
+python scripts/notebook_smoke_test.py --verbose
 ```
