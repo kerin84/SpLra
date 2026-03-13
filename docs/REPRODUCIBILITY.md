@@ -2,6 +2,8 @@
 
 This guide describes the frozen workflow used to reproduce the official paper artifact and validate the repository after changes.
 
+For exploratory work beyond the published artifact, use the separate [Research Track](RESEARCH_TRACK.md).
+
 ## 1) Environment Setup
 
 ```bash
@@ -95,6 +97,11 @@ Canonical non-notebook checks:
 - `scripts/run_paper_experiments.py` executes the `hair_dryer` and `cstr` workflows.
 - `artifacts/paper_experiment_baselines.json` stores the frozen reference metrics.
 - CI compares current results against that baseline with a small numeric tolerance.
+
+Research-only extensions:
+
+- `scripts/run_research_benchmarks.py` runs the initial benchmark and robustness suite.
+- Its outputs are meant for iterative comparison and method development, not as a frozen paper baseline.
 
 ## 6) Notes On Colab Paths
 

@@ -29,6 +29,15 @@ The locked environment covers the core numerical code, unit tests, and notebook 
 - `SIPPY-master/`: local copy of SIPPY used for baseline/comparison workflows.
 - `tests/`: unit tests for critical numerical components.
 
+## Repository Tracks
+
+This repository now has two explicit tracks:
+
+- `paper artifact`: frozen reproducibility surface for the published article
+- `research track`: extensible surface for new experiments, benchmarks, and API growth
+
+See [Research Track](docs/RESEARCH_TRACK.md) for the contribution rules and the separation between both surfaces.
+
 ## Quick Start
 
 ### 1) Create environment
@@ -65,6 +74,8 @@ Run notebooks in `Notebooks/` using Jupyter from the repository root or from `No
 - `Python/core/sparse_lra_core.py`: pure computation layer with typed result objects.
 - `Python/viz/sparse_lra_plots.py`: plotting functions separated from core logic.
 - `Python/io_layer/sparse_lra_io.py`: dataset loading, standardization, and train/test split utilities.
+- `Python/api/public_api.py`: stable high-level API for fitting, lag selection, validation, and forecasting.
+- `Python/research/benchmark_suite.py`: initial research benchmark and robustness suite.
 
 ## Datasets
 
@@ -86,9 +97,23 @@ Canonical script-based experiments now live outside notebooks:
 - `scripts/run_paper_experiments.py`: runs the `hair_dryer` and `cstr` paper experiments.
 - `artifacts/paper_experiment_baselines.json`: frozen reference metrics used in CI.
 
+Research benchmark entry points:
+
+- `scripts/run_research_benchmarks.py`: runs the initial benchmark and robustness suite.
+- `artifacts/research_benchmark_results.json`: current snapshot of research-track metrics.
+
 ## API And Architecture Notes
 
 See [API Reference](docs/API_REFERENCE.md) for the current module organization (`core`, `io_layer`, `viz`) and backward compatibility details.
+
+Public entry points for new code:
+
+- `prepare_dataset_split(...)`
+- `fit_input_output_model(...)`
+- `select_input_output_lag(...)`
+- `evaluate_input_output_model(...)`
+- `fit_autoregressive_model(...)`
+- `forecast_autoregressive_model(...)`
 
 ## Citation
 
