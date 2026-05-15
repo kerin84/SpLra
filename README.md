@@ -101,6 +101,7 @@ Research benchmark entry points:
 
 - `scripts/run_research_benchmarks.py`: runs the initial benchmark and robustness suite.
 - `artifacts/research_benchmark_results.json`: current snapshot of research-track metrics.
+- `docs/RESEARCH_ROADMAP.md`: next research line for time-varying and nonlinear identification.
 
 ## API And Architecture Notes
 
@@ -114,6 +115,17 @@ Public entry points for new code:
 - `evaluate_input_output_model(...)`
 - `fit_autoregressive_model(...)`
 - `forecast_autoregressive_model(...)`
+
+Planned next research branches:
+
+- `Python/research/time_varying/`
+- `Python/research/nonlinear/`
+
+## License
+
+Original code in this repository is licensed under the **European Union Public Licence v. 1.2** (`LICENSE`).
+
+The `SIPPY-master/` directory is a vendored copy of SIPPY, licensed under the GNU Lesser General Public License (LGPL). See `SIPPY-master/LICENSE` for its terms.
 
 ## Citation
 
